@@ -1,8 +1,8 @@
 const express = require('express');
-const {deleteCat, getAll, add} = require('../controllers/catController');
+const { deleteCat, getAll, add } = require('../controllers/catController');
 const ExpressFormidable = require('express-formidable')
 
-const {UploadImage} = require('../helpers/uploadImage');
+const { UploadImage } = require('../helpers/uploadImage');
 
 const router = express.Router();
 

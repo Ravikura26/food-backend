@@ -3,8 +3,8 @@ const userModel = require("../models/userModel");
 const profileModel = require("../models/profileModel");
 
 
-const addItem = async(req, res, next) => { 
-    const id = req.user.id; 
+const addItem = async (req, res, next) => {
+    const id = req.user.id;
     try {
         const user = await userModel.findById(id);
         if (!user) {
@@ -13,29 +13,29 @@ const addItem = async(req, res, next) => {
             return next(error);
         }
 
-        const item = new itemModel({...req.body, addedBy:id});
+        const item = new itemModel({ ...req.body, addedBy: id });
         await item.save();
 
         res
             .status(201)
-            .json({message: 'Item added successfully.', success: true});
+            .json({ message: 'Item added successfully.', success: true });
     } catch (error) {
         next(error);
     }
 };
 
 const getAllItemOfRestaurant = async (req, res, next) => {
-    const id= req.user.id;
+    const id = req.user.id;
 
-    try { 
-        const items = await itemModel.find({ addedBy: id }); 
+    try {
+        const items = await itemModel.find({ addedBy: id });
         if (items.length === 0) {
             const error = new Error('No items found for this restaurant.');
             error.statusCode = 404;
             return next(error);
         }
- 
-        res.status(200).json({ message: 'All items listed successfully.', success: true, data:items });
+
+        res.status(200).json({ message: 'All items listed successfully.', success: true, data: items });
     } catch (error) {
         next(error);
     }
@@ -70,8 +70,8 @@ const ItemDetails = async (req, res, next) => {
 
 
 
-const deleteItem = async(req, res, next) => {
-    const {id} = req.params;
+const deleteItem = async (req, res, next) => {
+    const { id } = req.params;
 
     try {
         const item = await itemModel.findByIdAndDelete(id);
@@ -84,30 +84,30 @@ const deleteItem = async(req, res, next) => {
 
         res
             .status(200)
-            .json({message: 'item deleted successfully.', success: true});
+            .json({ message: 'item deleted successfully.', success: true });
     } catch (error) {
         next(error);
     }
 };
 
-const getAllItem= async(req,res)=>{
-    try { 
-        const items = await itemModel.find().populate('addedBy'); 
+const getAllItem = async (req, res, next) => {
+    try {
+        const items = await itemModel.find().populate('addedBy');
         if (items.length === 0) {
             const error = new Error('No items found .');
             error.statusCode = 404;
             return next(error);
         }
- 
-        res.status(200).json({ message: 'All items listed successfully.', success: true, data:items });
+
+        res.status(200).json({ message: 'All items listed successfully.', success: true, data: items });
     } catch (error) {
-        next()
-}
+        next(error)
+    }
 }
 
 module.exports = {
     addItem,
     getAllItemOfRestaurant,
     getAllItem,
-    deleteItem,ItemDetails
+    deleteItem, ItemDetails
 }
